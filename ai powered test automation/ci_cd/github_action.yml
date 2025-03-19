@@ -1,0 +1,14 @@
+name: Deploy to AWS
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build Docker Image
+        run: docker build -t test-migration .
+      - name: Push Image to AWS
+        run: docker push your-repo-url/test-migration
+      - name: Deploy to AWS Lambda
+        run: aws lambda update-function-code --function-name test-migration --image-uri your-repo-url/test-migration
